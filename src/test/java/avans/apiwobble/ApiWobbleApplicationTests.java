@@ -1,4 +1,4 @@
-package com.example.apiwobble;
+package avans.apiwobble;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

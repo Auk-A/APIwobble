@@ -1,4 +1,4 @@
-package com.example.apiwobble;
+package avans.apiwobble;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
