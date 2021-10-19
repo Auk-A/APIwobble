@@ -9,12 +9,12 @@ public class CarTerms {
     private String currentLocation;
     private int currentValue;
 
-    public void calculateOwnershipCost(){
-        int ownerShipCost;
+    public int calculateOwnershipCost(){
+
     }
 
-    public void calculateUsageCost(){
-        int usageCost;
+    public int calculateUsageCost(){
+
     }
 
     public void calculateSelfInsurance(){
