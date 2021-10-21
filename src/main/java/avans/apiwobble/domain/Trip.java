@@ -1,9 +1,21 @@
 package avans.apiwobble.domain;
 
-import org.apache.tomcat.util.security.MD5Encoder;
-import org.hibernate.dialect.MariaDB53Dialect;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
+@Getter @Setter @NoArgsConstructor
 public class Trip {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+
     private String userName;
     private String licensePlate;
     private String pointPickUp;

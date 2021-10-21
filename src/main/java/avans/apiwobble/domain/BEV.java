@@ -1,6 +1,6 @@
 package avans.apiwobble.domain;
 
-public class BEV extends Car{
+public class BEV extends Car {
     protected final String carType;
 
     public BEV(String carType) {
