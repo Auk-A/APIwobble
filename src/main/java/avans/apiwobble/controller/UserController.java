@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/user")
-public class UserDataController {
+@RequestMapping("/users")
+public class UserController {
 
     @RequestMapping("")
     @ResponseBody
