@@ -1,5 +1,10 @@
 package avans.apiwobble.domain;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -7,9 +12,12 @@ import javax.persistence.Id;
 import java.util.Date;
 
 @Entity
+@Getter @Setter @NoArgsConstructor
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+
+    @Setter(AccessLevel.NONE)
     private long id;
 
     private String carBrand;
@@ -25,10 +33,6 @@ public class Car {
 
     public Car(String licensePlate) {
         this.licensePlate = licensePlate;
-    }
-
-    public Car() {
-
     }
 
     public void getBuildDate(){
