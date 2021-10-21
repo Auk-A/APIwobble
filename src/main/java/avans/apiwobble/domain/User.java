@@ -6,6 +6,6 @@ public class User {
     public double userScore;
 
     public int calculateScore(){
-
+        return 0;
     }
 }

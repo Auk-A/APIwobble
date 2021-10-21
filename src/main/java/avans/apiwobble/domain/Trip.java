@@ -11,13 +11,12 @@ public class Trip {
     private int habitScore;
     private int tripDuration;
     private double tripPrice;
-    private MD5 parkingPhotos;
 
     public void rentCar(int userName, String licensePlate){
 
     }
 
-    public boolean uploadParkingPhotos(){
+    public void uploadParkingPhotos(){
 
     }
 

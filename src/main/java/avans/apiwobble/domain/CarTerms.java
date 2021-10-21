@@ -10,11 +10,11 @@ public class CarTerms {
     private int currentValue;
 
     public int calculateOwnershipCost(){
-
+        return 0;
     }
 
     public int calculateUsageCost(){
-
+        return 0;
     }
 
     public void calculateSelfInsurance(){
