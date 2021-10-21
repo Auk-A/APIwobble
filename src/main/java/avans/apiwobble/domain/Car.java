@@ -31,8 +31,11 @@ public class Car {
     private double secondsTo100;
     private Date carBuildDate;
 
-    public Car(String licensePlate) {
+    public Car(String licensePlate, String carBrand, String carModel, String carColor) {
         this.licensePlate = licensePlate;
+        this.carModel = carModel;
+        this.carColor = carColor;
+        this.carBrand = carBrand;
     }
 
     public void getBuildDate(){
