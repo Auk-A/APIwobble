@@ -30,12 +30,12 @@ public class CarController {
         if ((model == null || model.isEmpty()) && (brand == null || brand.isEmpty())) {
             found.addAll(carRepository.findAll());
         } else if ((model != null || !model.isEmpty()) && (brand != null || !brand.isEmpty())) {
-            found.addAll(carRepository.findCarByBrandContainingIgnoringCase(brand));
-            found.addAll(carRepository.findCarByModelContainingIgnoringCase(model));
+            found.addAll(carRepository.findCarByCarBrandContainingIgnoringCase(brand));
+            found.addAll(carRepository.findCarByCarModelContainingIgnoringCase(model));
         } else if (!model.isEmpty()) {
-            found.addAll(carRepository.findCarByModelContainingIgnoringCase(model));
+            found.addAll(carRepository.findCarByCarModelContainingIgnoringCase(model));
         } else {
-            found.addAll(carRepository.findCarByModelContainingIgnoringCase(brand));
+            found.addAll(carRepository.findCarByCarModelContainingIgnoringCase(brand));
         }
 
         return found;
