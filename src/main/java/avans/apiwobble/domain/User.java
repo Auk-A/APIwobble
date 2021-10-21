@@ -5,7 +5,7 @@ public class User {
     private String userMail;
     public double userScore;
 
-    public void calculateScore(){
+    public int calculateScore(){
 
     }
 }
