@@ -10,8 +10,5 @@ import java.util.List;
 @Repository
 @Component
 public interface CarRepository extends JpaRepository<Car, Long> {
-    List<Car> findCarByCarModelIgnoringCase(String model);
-    List<Car> findCarByCarBrandIgnoringCase(String brand);
-    List<Car> findCarByCarModelAndCarBrandIgnoringCase(String model, String brand);
     List<Car> findCarByLicensePlateIgnoringCase(String licensePlate);
 }

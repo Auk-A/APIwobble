@@ -35,12 +35,6 @@ public class CarController {
 
     }
 
-
-//    @GetMapping()
-//    public Car create(@RequestBody Car car) {
-//        return carRepository.save(car);
-//    }
-
     // Get all cars by model or by brand
     @GetMapping("/findby")
     public List<Car> getAll(
@@ -50,20 +44,10 @@ public class CarController {
             @RequestParam(required = false, defaultValue = "0") int min_top_speed,
             @RequestParam(required = false, defaultValue = "0") int min_value,
             @RequestParam(required = false, defaultValue = "2147483647") int max_value,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date min_built_date,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date max_built_date
+            @RequestParam(required = false, defaultValue = "1900-01-01") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date min_built_date,
+            @RequestParam(required = false, defaultValue = "2100-01-01") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date max_built_date
     ) {
         List<Car> found = new ArrayList<>(carRepository.findAll());
-
-//        if ((model == null || model.isEmpty()) && (brand == null || brand.isEmpty())) {
-//            found.addAll(carRepository.findAll());
-//        } else if ((model != null && !model.isEmpty()) && (brand != null && !brand.isEmpty())) {
-//            found.addAll(carRepository.findCarByCarModelAndCarBrandIgnoringCase(model, brand));
-//        } else if (model != null && !model.isEmpty()) {
-//            found.addAll(carRepository.findCarByCarModelIgnoringCase(model));
-//        } else {
-//            found.addAll(carRepository.findCarByCarModelIgnoringCase(brand));
-//        }
 
         //Filter by brand
         if (model != null && !model.isEmpty()) {
@@ -102,12 +86,10 @@ public class CarController {
         }
 
         // Filter by date
-        if (min_built_date != null || max_built_date != null) {
-            found = found.stream()
-                    .filter(car -> min_built_date.before(car.getCarBuildDate()))
-                    .filter(car -> max_built_date.after(car.getCarBuildDate()))
-                    .collect(Collectors.toList());
-        }
+        found = found.stream()
+                .filter(car -> min_built_date.before(car.getCarBuildDate()))
+                .filter(car -> max_built_date.after(car.getCarBuildDate()))
+                .collect(Collectors.toList());
 
         return found;
     }
