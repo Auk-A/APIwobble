@@ -1,29 +1,37 @@
 package avans.apiwobble.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import avans.apiwobble.domain.Car;
+import avans.apiwobble.domain.User;
+import avans.apiwobble.repository.CarRepository;
+import avans.apiwobble.repository.UserRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 
-    @RequestMapping("")
-    @ResponseBody
-    public String getUserData(HttpServletRequest request){
+    private final UserRepository userRepository;
 
-        String userId = request.getParameter("userid");
-        return "Return JSON with user data for user "+ userId + ".";
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    @RequestMapping("wallet")
-    @ResponseBody
-    public String getWalletData(HttpServletRequest request){
+    // Register a new user
+    @PostMapping("/new")
+    public ResponseEntity<HttpStatus> createUser(@RequestBody User newUser) {
+        String userName = newUser.getUserName();
+        String userMail = newUser.getUserMail();
+        if (userRepository.findUserByUserNameIgnoringCase(userName).isEmpty() && userRepository.findUserByUserMailIgnoringCase(userMail).isEmpty()) {
+            userRepository.save(newUser);
+            return ResponseEntity.ok(HttpStatus.CREATED);
+        } else {
+            return ResponseEntity.ok(HttpStatus.CONFLICT);
+        }
 
-        String userId = request.getParameter("userid");
-        return "Return JSON with wallet data for user " + userId + ".";
     }
 
 }

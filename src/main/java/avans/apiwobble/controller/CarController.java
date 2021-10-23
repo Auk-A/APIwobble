@@ -42,10 +42,11 @@ public class CarController {
             @RequestParam(required = false) String model,
             @RequestParam(required = false) String color,
             @RequestParam(required = false, defaultValue = "0") int min_top_speed,
+            @RequestParam(required = false, defaultValue = "2147483647") int max_top_speed,
             @RequestParam(required = false, defaultValue = "0") int min_value,
             @RequestParam(required = false, defaultValue = "2147483647") int max_value,
-            @RequestParam(required = false, defaultValue = "1900-01-01") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date min_built_date,
-            @RequestParam(required = false, defaultValue = "2100-01-01") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date max_built_date
+            @RequestParam(required = false, defaultValue = "1900-01-01") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date min_build_date,
+            @RequestParam(required = false, defaultValue = "2100-01-01") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date max_build_date
     ) {
         List<Car> found = new ArrayList<>(carRepository.findAll());
 
@@ -71,9 +72,10 @@ public class CarController {
         }
 
         // Filter top speed
-        if (min_top_speed > 0) {
+        if (min_top_speed > 0 || max_top_speed < 2147483647) {
             found = found.stream()
                     .filter(car -> min_top_speed <= car.getCarTopSpeed())
+                    .filter(car -> max_top_speed >= car.getCarTopSpeed())
                     .collect(Collectors.toList());
         }
 
@@ -87,8 +89,8 @@ public class CarController {
 
         // Filter by date
         found = found.stream()
-                .filter(car -> min_built_date.before(car.getCarBuildDate()))
-                .filter(car -> max_built_date.after(car.getCarBuildDate()))
+                .filter(car -> min_build_date.before(car.getCarBuildDate()))
+                .filter(car -> max_build_date.after(car.getCarBuildDate()))
                 .collect(Collectors.toList());
 
         return found;
