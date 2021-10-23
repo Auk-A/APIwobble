@@ -1,5 +1,6 @@
 package avans.apiwobble.controller;
 
+import avans.apiwobble.domain.Car;
 import avans.apiwobble.domain.User;
 import avans.apiwobble.repository.UserRepository;
 import org.springframework.http.HttpStatus;
@@ -50,6 +51,20 @@ public class UserController {
                     .collect(Collectors.toList());
         }
 
+        return found;
+    }
+
+    // Find a single user by id, username or email
+    @GetMapping("/find")
+    public List<User> getAll(@RequestParam(required = false) String id, @RequestParam(required = false) String user_name, @RequestParam(required = false) String user_mail) {
+        List<User> found = new ArrayList<>();
+        if (id != null && !id.isEmpty()) {
+            return userRepository.findUserById(id);
+        } else if(user_name != null && !user_name.isEmpty()){
+            return userRepository.findUserByUserNameIgnoringCase(user_name);
+        } else if(user_mail != null && !user_mail.isEmpty()){
+            return userRepository.findUserByUserMailIgnoringCase(user_mail);
+        }
         return found;
     }
 }
