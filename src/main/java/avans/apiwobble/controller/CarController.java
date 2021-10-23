@@ -2,12 +2,14 @@ package avans.apiwobble.controller;
 
 import avans.apiwobble.domain.Car;
 import avans.apiwobble.repository.CarRepository;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,7 +49,9 @@ public class CarController {
             @RequestParam(required = false) String color,
             @RequestParam(required = false, defaultValue = "0") int min_top_speed,
             @RequestParam(required = false, defaultValue = "0") int min_value,
-            @RequestParam(required = false, defaultValue = "2147483647") int max_value
+            @RequestParam(required = false, defaultValue = "2147483647") int max_value,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date min_built_date,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date max_built_date
     ) {
         List<Car> found = new ArrayList<>(carRepository.findAll());
 
@@ -82,7 +86,6 @@ public class CarController {
                     .collect(Collectors.toList());
         }
 
-
         // Filter top speed
         if (min_top_speed > 0) {
             found = found.stream()
@@ -95,6 +98,14 @@ public class CarController {
             found = found.stream()
                     .filter(car -> min_value <= car.getCarNewValue())
                     .filter(car -> max_value >= car.getCarNewValue())
+                    .collect(Collectors.toList());
+        }
+
+        // Filter by date
+        if (min_built_date != null || max_built_date != null) {
+            found = found.stream()
+                    .filter(car -> min_built_date.before(car.getCarBuildDate()))
+                    .filter(car -> max_built_date.after(car.getCarBuildDate()))
                     .collect(Collectors.toList());
         }
 
