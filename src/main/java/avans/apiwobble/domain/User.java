@@ -30,7 +30,6 @@ public class User {
 
     public double userScore;
 
-
     public void calculateScore(){
         this.userScore = 0;
     }
