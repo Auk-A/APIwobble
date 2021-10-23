@@ -35,7 +35,7 @@ public class CarController {
 
     }
 
-    // Get all cars by model or by brand
+    // Get all cars by request params
     @GetMapping("/findby")
     public List<Car> getAll(
             @RequestParam(required = false) String brand,

@@ -1,14 +1,14 @@
 package avans.apiwobble.controller;
 
-import avans.apiwobble.domain.Car;
 import avans.apiwobble.domain.User;
-import avans.apiwobble.repository.CarRepository;
 import avans.apiwobble.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user")
@@ -34,4 +34,22 @@ public class UserController {
 
     }
 
+    // Get all users by request params
+    @GetMapping("/findby")
+    public List<User> getAll(
+            @RequestParam(required = false, defaultValue = "0") int min_score,
+            @RequestParam(required = false, defaultValue = "2147483647") int max_score
+    ) {
+        List<User> found = new ArrayList<>(userRepository.findAll());
+
+        // Filter by user score
+        if (min_score > 0 || max_score < 2147483647) {
+            found = found.stream()
+                    .filter(user -> min_score <= user.getUserScore())
+                    .filter(user -> max_score >= user.getUserScore())
+                    .collect(Collectors.toList());
+        }
+
+        return found;
+    }
 }
