@@ -86,7 +86,6 @@ public class CarController {
                     .filter(car -> max_value >= car.getCarNewValue())
                     .collect(Collectors.toList());
         }
-
         // Filter by date
         found = found.stream()
                 .filter(car -> min_build_date.before(car.getCarBuildDate()))
