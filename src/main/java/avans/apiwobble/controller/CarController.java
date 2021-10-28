@@ -45,8 +45,8 @@ public class CarController {
             @RequestParam(required = false, defaultValue = "2147483647") int max_top_speed,
             @RequestParam(required = false, defaultValue = "0") int min_value,
             @RequestParam(required = false, defaultValue = "2147483647") int max_value,
-            @RequestParam(required = false, defaultValue = "1900-01-01") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date min_build_date,
-            @RequestParam(required = false, defaultValue = "2100-01-01") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date max_build_date
+            @RequestParam(required = false, defaultValue = "1900-01-01") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, fallbackPatterns = { "yyyy" }) Date min_build_date,
+            @RequestParam(required = false, defaultValue = "2100-01-01") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, fallbackPatterns = { "yyyy" }) Date max_build_date
     ) {
         List<Car> found = new ArrayList<>(carRepository.findAll());
 
