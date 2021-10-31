@@ -43,6 +43,7 @@ public class CarController {
             @RequestParam(required = false) String color,
             @RequestParam(required = false, defaultValue = "0") int min_top_speed,
             @RequestParam(required = false, defaultValue = "2147483647") int max_top_speed,
+            @RequestParam(required = false, defaultValue = "2147483647") int max_seconds_to_100,
             @RequestParam(required = false, defaultValue = "0") int min_value,
             @RequestParam(required = false, defaultValue = "2147483647") int max_value,
             @RequestParam(required = false, defaultValue = "1900-01-01") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, fallbackPatterns = { "yyyy" }) Date min_build_date,
@@ -79,6 +80,13 @@ public class CarController {
                     .collect(Collectors.toList());
         }
 
+        // Filter by seconds to 100
+        if (max_seconds_to_100 < 2147483647) {
+            found = found.stream()
+                    .filter(car -> max_seconds_to_100 >= car.getSecondsTo100())
+                    .collect(Collectors.toList());
+        }
+
         // Filter car value
         if (min_value > 0 || max_value < 2147483647) {
             found = found.stream()
@@ -86,6 +94,7 @@ public class CarController {
                     .filter(car -> max_value >= car.getCarNewValue())
                     .collect(Collectors.toList());
         }
+
         // Filter by date
         found = found.stream()
                 .filter(car -> min_build_date.before(car.getCarBuildDate()))
