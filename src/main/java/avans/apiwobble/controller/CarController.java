@@ -23,13 +23,13 @@ public class CarController {
         this.carRepository = carRepository;
     }
 
-    // Add a new car
+    // Add a new car by license plate
     @PostMapping("/new")
-    public ResponseEntity<HttpStatus> createCar(@RequestBody Car resultCar) throws ParseException {
+    public ResponseEntity<HttpStatus> createCar(@RequestBody Car resultCar) {
         String licensePlate = resultCar.getLicensePlate();
         if (carRepository.findCarByLicensePlateIgnoringCase(licensePlate).isEmpty()) {
             Car apiCar = new Car(licensePlate);
-            if(apiCar.usesExternal()){
+            if (apiCar.usesExternal()) {
                 resultCar = new Car(licensePlate);
             }
             carRepository.save(resultCar);
@@ -38,17 +38,6 @@ public class CarController {
             return ResponseEntity.ok(HttpStatus.CONFLICT);
         }
 
-    }
-
-    @PostMapping("/newbyplate")
-    public ResponseEntity<HttpStatus> createCarByPlate(@RequestBody String license_plate) throws ParseException {
-        if (carRepository.findCarByLicensePlateIgnoringCase(license_plate).isEmpty()) {
-            Car newCar = new Car(license_plate);
-            carRepository.save(newCar);
-            return ResponseEntity.ok(HttpStatus.CREATED);
-        } else {
-            return ResponseEntity.ok(HttpStatus.CONFLICT);
-        }
     }
 
     // Get all cars by request params
@@ -62,8 +51,8 @@ public class CarController {
             @RequestParam(required = false, defaultValue = "2147483647") int max_seconds_to_100,
             @RequestParam(required = false, defaultValue = "0") int min_value,
             @RequestParam(required = false, defaultValue = "2147483647") int max_value,
-            @RequestParam(required = false, defaultValue = "1900-01-01") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, fallbackPatterns = { "yyyy" }) Date min_build_date,
-            @RequestParam(required = false, defaultValue = "2100-01-01") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, fallbackPatterns = { "yyyy" }) Date max_build_date
+            @RequestParam(required = false, defaultValue = "1900-01-01") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, fallbackPatterns = {"yyyy"}) Date min_build_date,
+            @RequestParam(required = false, defaultValue = "2100-01-01") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, fallbackPatterns = {"yyyy"}) Date max_build_date
     ) {
         List<Car> found = new ArrayList<>(carRepository.findAll());
 
@@ -121,7 +110,7 @@ public class CarController {
     }
 
     @GetMapping("/find")
-    public List<Car> getAll(@RequestParam(required = true) String license_plate) {
+    public List<Car> getAll(@RequestParam String license_plate) {
         List<Car> found = new ArrayList<>();
         if (license_plate != null && !license_plate.isEmpty()) {
             return carRepository.findCarByLicensePlateIgnoringCase(license_plate);

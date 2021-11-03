@@ -61,7 +61,7 @@ public class Car {
             JSONObject obj = (JSONObject) json_arr.get(0);
 
             // Set object properties
-            this.licensePlate = this.licensePlate;
+            this.licensePlate = obj.getString("kenteken");
             this.carBrand = obj.getString("merk");
             this.carModel = obj.getString("handelsbenaming");
             this.carColor = obj.getString("eerste_kleur");
