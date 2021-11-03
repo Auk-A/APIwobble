@@ -16,7 +16,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
-@Getter @Setter @NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -43,14 +45,15 @@ public class Car {
 
     public int getCarPower(int pistonVolume, int carMass) {
         // TODO: Implement in ICE
-        return (int) (Math.round((double)pistonVolume / carMass * 100.0));
+        return (int) (Math.round((double) pistonVolume / carMass * 100.0));
     }
 
     public Car(String licensePlate) {
         CreateCar(licensePlate);
     }
-    public void CreateCar(String licensePlate){
-        try{
+
+    public void CreateCar(String licensePlate) {
+        try {
             String uri = "https://opendata.rdw.nl/resource/m9d7-ebf2.json?kenteken=" + licensePlate;
             RestTemplate restTemplate = new RestTemplate();
 
@@ -78,11 +81,12 @@ public class Car {
         }
     }
 
-    public boolean usesExternal(){
+    // If RDW API was used on initiation, returns true
+    public boolean usesExternal() {
         return this.usesAPI;
     }
 
-    public void addCar(){
+    public void addCar() {
 
     }
 

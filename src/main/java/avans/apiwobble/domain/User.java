@@ -13,7 +13,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Entity
-@Getter @Setter @NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,7 +32,7 @@ public class User {
 
     public double userScore;
 
-    public void calculateScore(){
+    public void calculateScore() {
         this.userScore = 0;
     }
 }
