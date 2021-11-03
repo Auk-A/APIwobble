@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,15 +25,30 @@ public class CarController {
 
     // Add a new car
     @PostMapping("/new")
-    public ResponseEntity<HttpStatus> createCar(@RequestBody Car newCar) {
-        String licensePlate = newCar.getLicensePlate();
+    public ResponseEntity<HttpStatus> createCar(@RequestBody Car resultCar) throws ParseException {
+        String licensePlate = resultCar.getLicensePlate();
         if (carRepository.findCarByLicensePlateIgnoringCase(licensePlate).isEmpty()) {
-            carRepository.save(newCar);
+            Car apiCar = new Car(licensePlate);
+            if(apiCar.usesExternal()){
+                resultCar = new Car(licensePlate);
+            }
+            carRepository.save(resultCar);
             return ResponseEntity.ok(HttpStatus.CREATED);
         } else {
             return ResponseEntity.ok(HttpStatus.CONFLICT);
         }
 
+    }
+
+    @PostMapping("/newbyplate")
+    public ResponseEntity<HttpStatus> createCarByPlate(@RequestBody String license_plate) throws ParseException {
+        if (carRepository.findCarByLicensePlateIgnoringCase(license_plate).isEmpty()) {
+            Car newCar = new Car(license_plate);
+            carRepository.save(newCar);
+            return ResponseEntity.ok(HttpStatus.CREATED);
+        } else {
+            return ResponseEntity.ok(HttpStatus.CONFLICT);
+        }
     }
 
     // Get all cars by request params
