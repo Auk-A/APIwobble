@@ -1,5 +1,6 @@
 # Wobble API
 
+A Spring Boot REST API project
 
 # GET Requests
 
