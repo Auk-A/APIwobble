@@ -37,13 +37,13 @@ public class Car {
     private boolean usesAPI = false;
 
     public Date getBuildDate(String dateString) throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat("yyyymmdd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
         return format.parse(dateString);
     }
 
     public int getCarPower(int pistonVolume, int carMass) {
-        // TODO: Calculate car power
-        return 100;
+        // TODO: Implement in ICE
+        return (int) (Math.round((double)pistonVolume / carMass * 100.0));
     }
 
     public Car(String licensePlate) {

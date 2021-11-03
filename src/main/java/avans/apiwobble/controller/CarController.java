@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,7 +40,7 @@ public class CarController {
     }
 
     // Get all cars by request params
-    @GetMapping("/findby")
+    @GetMapping("/filter")
     public List<Car> getAll(
             @RequestParam(required = false) String brand,
             @RequestParam(required = false) String model,
