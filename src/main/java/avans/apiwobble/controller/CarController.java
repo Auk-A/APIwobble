@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,15 +25,30 @@ public class CarController {
 
     // Add a new car
     @PostMapping("/new")
-    public ResponseEntity<HttpStatus> createCar(@RequestBody Car newCar) {
-        String licensePlate = newCar.getLicensePlate();
+    public ResponseEntity<HttpStatus> createCar(@RequestBody Car resultCar) throws ParseException {
+        String licensePlate = resultCar.getLicensePlate();
         if (carRepository.findCarByLicensePlateIgnoringCase(licensePlate).isEmpty()) {
-            carRepository.save(newCar);
+            Car apiCar = new Car(licensePlate);
+            if(apiCar.usesExternal()){
+                resultCar = new Car(licensePlate);
+            }
+            carRepository.save(resultCar);
             return ResponseEntity.ok(HttpStatus.CREATED);
         } else {
             return ResponseEntity.ok(HttpStatus.CONFLICT);
         }
 
+    }
+
+    @PostMapping("/newbyplate")
+    public ResponseEntity<HttpStatus> createCarByPlate(@RequestBody String license_plate) throws ParseException {
+        if (carRepository.findCarByLicensePlateIgnoringCase(license_plate).isEmpty()) {
+            Car newCar = new Car(license_plate);
+            carRepository.save(newCar);
+            return ResponseEntity.ok(HttpStatus.CREATED);
+        } else {
+            return ResponseEntity.ok(HttpStatus.CONFLICT);
+        }
     }
 
     // Get all cars by request params
@@ -43,6 +59,7 @@ public class CarController {
             @RequestParam(required = false) String color,
             @RequestParam(required = false, defaultValue = "0") int min_top_speed,
             @RequestParam(required = false, defaultValue = "2147483647") int max_top_speed,
+            @RequestParam(required = false, defaultValue = "2147483647") int max_seconds_to_100,
             @RequestParam(required = false, defaultValue = "0") int min_value,
             @RequestParam(required = false, defaultValue = "2147483647") int max_value,
             @RequestParam(required = false, defaultValue = "1900-01-01") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, fallbackPatterns = { "yyyy" }) Date min_build_date,
@@ -79,6 +96,13 @@ public class CarController {
                     .collect(Collectors.toList());
         }
 
+        // Filter by seconds to 100
+        if (max_seconds_to_100 < 2147483647) {
+            found = found.stream()
+                    .filter(car -> max_seconds_to_100 >= car.getSecondsTo100())
+                    .collect(Collectors.toList());
+        }
+
         // Filter car value
         if (min_value > 0 || max_value < 2147483647) {
             found = found.stream()
@@ -86,6 +110,7 @@ public class CarController {
                     .filter(car -> max_value >= car.getCarNewValue())
                     .collect(Collectors.toList());
         }
+
         // Filter by date
         found = found.stream()
                 .filter(car -> min_build_date.before(car.getCarBuildDate()))
